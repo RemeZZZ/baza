@@ -113,7 +113,8 @@ async function main(dir, result, config, callback, options) {
             if (allowBanks.includes(header)) {
               const promise = new Promise((resolve, reject) => {
                 bankRouter(header, {
-                  phone: getReplaceConfig()['Телефон'].find((key) => row[key]),
+                  phone:
+                    row[getReplaceConfig()['Телефон'].find((key) => row[key])],
                   inn: row['инн'],
                 })
                   .then((data) => {
