@@ -5,6 +5,7 @@ export default async function check(inn, phone) {
     method: 'POST',
 
     headers: {
+      'Content-Type': 'application/json',
       authorization: 'ssssCKJ',
     },
 
