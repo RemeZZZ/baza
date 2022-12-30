@@ -122,6 +122,8 @@ async function main(dir, result, config, callback, options) {
                       .cell(`${key}${index + 1}`)
                       .value(data.result);
 
+                    console.log(data);
+
                     resolve(data);
                   })
                   .catch(reject);
@@ -140,7 +142,7 @@ async function main(dir, result, config, callback, options) {
         });
     });
 
-    console.log(promises);
+    console.log(promises, '---------');
 
     await Promise.all(promises);
 
