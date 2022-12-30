@@ -8,6 +8,6 @@ export async function bankRouter(bankName, companyInfo) {
   }
 
   if (bankName === 'альфа') {
-    return await alpha({ inn: companyInfo.inn, phone: companyInfo.phone });
+    return await alpha(companyInfo.inn, companyInfo.phone);
   }
 }
