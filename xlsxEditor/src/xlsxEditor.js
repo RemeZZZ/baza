@@ -122,6 +122,8 @@ async function main(dir, result, config, callback, options) {
                       .sheet(0)
                       .cell(`${key}${index + 1}`)
                       .value(data.result);
+
+                    resolve(data);
                   })
                   .catch(reject);
               });
