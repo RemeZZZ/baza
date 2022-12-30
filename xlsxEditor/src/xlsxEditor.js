@@ -110,13 +110,8 @@ async function main(dir, result, config, callback, options) {
           });
 
           headers.forEach((header) => {
-            if (allowBanks.includes(header) && index) {
+            if (allowBanks.includes(header)) {
               const promise = new Promise((resolve, reject) => {
-                console.log(
-                  row,
-                  getReplaceConfig()['Телефон'].find((key) => row[key]),
-                );
-
                 bankRouter(header, {
                   phone: getReplaceConfig()['Телефон'].find((key) => row[key]),
                   inn: row['инн'],
@@ -125,7 +120,7 @@ async function main(dir, result, config, callback, options) {
                     workbook
                       .sheet(0)
                       .cell(`${key}${index + 1}`)
-                      .value(data.result);
+                      .value(index ? data.result : header);
 
                     console.log(data);
 
