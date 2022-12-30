@@ -4,6 +4,7 @@ import { existsSync, writeFileSync, readFileSync } from 'fs';
 import logs from './logs.js';
 import { getReplaceConfig } from '../../store/index.js';
 import { bankRouter, allowBanks } from '../banks/mainConroller.js';
+import { resolve } from 'path';
 
 const existFile = existsSync('./ogrns.json');
 
@@ -16,6 +17,8 @@ let ogrns = JSON.parse(readFileSync('./ogrns.json', 'utf-8') || []);
 
 async function main(dir, result, config, callback, options) {
   const hash = getHash();
+
+  const promises = [];
 
   const { type } = result;
 
@@ -42,7 +45,7 @@ async function main(dir, result, config, callback, options) {
   const date = new Date();
 
   xlsx.fromFileAsync('./default.xlsx').then(async (workbook) => {
-    Object.entries(config[type]).forEach(async ([key, value]) => {
+    Object.entries(config[type]).forEach(([key, value]) => {
       const headers = value
         .split(', ')
         .filter((item) => item)
@@ -109,21 +112,32 @@ async function main(dir, result, config, callback, options) {
 
           headers.forEach(async (header) => {
             if (allowBanks.includes(header)) {
-              row[header] = await bankRouter(header, {
-                phone: getReplaceConfig()['Телефон'].find((key) => row[key]),
-                inn: row['инн'],
+              const promise = new Promise((resolve, reject) => {
+                bankRouter(header, {
+                  phone: getReplaceConfig()['Телефон'].find((key) => row[key]),
+                  inn: row['инн'],
+                })
+                  .then((data) => {
+                    workbook
+                      .sheet(0)
+                      .cell(`${key}${index + 1}`)
+                      .value(data.result);
+                  })
+                  .catch(reject);
               });
-            }
-
-            if (row[header]) {
-              workbook
-                .sheet(0)
-                .cell(`${key}${index + 1}`)
-                .value(row[header].toString());
+            } else {
+              if (row[header]) {
+                workbook
+                  .sheet(0)
+                  .cell(`${key}${index + 1}`)
+                  .value(row[header].toString());
+              }
             }
           });
         });
     });
+
+    await Promise.all(promises);
 
     const finalPatch = `./${dir}/${date.getDate()}.${
       date.getMonth() + 1 >= 10
