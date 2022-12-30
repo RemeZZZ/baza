@@ -127,6 +127,8 @@ async function main(dir, result, config, callback, options) {
                   })
                   .catch(reject);
               });
+
+              promises.push(promise);
             } else {
               if (row[header]) {
                 workbook
