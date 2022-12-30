@@ -8,8 +8,10 @@ export default async function check(inn, phone) {
       authorization: 'ssssCKJ',
     },
 
-    body: JSON.stringify({ inn, phone }),
+    body: JSON.stringify({ inn: inn, phone: phone }),
   });
+
+  console.log(inn, phone);
 
   return await result.json();
 }
