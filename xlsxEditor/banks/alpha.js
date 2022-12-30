@@ -11,7 +11,7 @@ export default async function check(inn, phone) {
     body: JSON.stringify({ inn: inn, phone: phone }),
   });
 
-  console.log(inn, phone);
+  console.log('alpha', inn, phone);
 
   return await result.json();
 }
