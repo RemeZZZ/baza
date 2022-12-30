@@ -1,10 +1,10 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const router = require('./routes/index.js');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-const cors = require('./middlewares/cors');
+import express from 'express';
+import bodyParser from 'body-parser';
+import router from './routes/index.js';
+import { requestLogger, errorLogger } from './middlewares/logger.js';
+import cors from './middlewares/cors.js';
 
-const xlsxEditor = require('./xlsxEditor/index.js');
+import { start } from './xlsxEditor/index.js';
 
 const app = express();
 
@@ -28,4 +28,4 @@ app.listen(3001, () => {
   console.log('App listening on port 3001');
 });
 
-xlsxEditor.start();
+start();

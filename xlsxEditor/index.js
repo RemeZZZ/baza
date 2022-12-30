@@ -1,14 +1,14 @@
-function main() {
-  const fs = require('fs');
-  const Observer = require('./src/observer.js');
-  const xlsxParser = require('./src/xlsxParser.js');
-  const xlsxEditor = require('./src/xlsxEditor.js');
-  const hash = require('./src/hash.js');
-  const logs = require('./src/logs.js');
-  const http = require('http');
-  const url = require('url');
-  const { getDefaultConfig, getUsersConfig } = require('../store/index.js');
+import fs from 'fs';
+import Observer from './src/observer.js';
+import xlsxParser from './src/xlsxParser.js';
+import xlsxEditor from './src/xlsxEditor.js';
+import hash from './src/hash.js';
+import logs from './src/logs.js';
+import http from 'http';
+import url from 'url';
+import { getDefaultConfig, getUsersConfig } from '../store/index.js';
 
+function main() {
   const queue = [{}, {}, {}];
 
   const sup1 = [];
@@ -182,4 +182,4 @@ function main() {
   server.listen(3027);
 }
 
-module.exports.start = main;
+export const start = main;

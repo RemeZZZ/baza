@@ -6,4 +6,4 @@ async function main(text) {
   //$div.scrollIntoView();
 }
 
-module.exports = main;
+export default main;

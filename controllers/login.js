@@ -1,6 +1,6 @@
 const password = '323323dffdsfsdfjeifjkrnkgnfdjgndlw';
 
-module.exports.onLogin = (request, response) => {
+export function onLogin(request, response) {
   const { authorization } = request.headers;
 
   if (authorization === password) {
@@ -10,4 +10,4 @@ module.exports.onLogin = (request, response) => {
   }
 
   response.status(401).send('fail');
-};
+}

@@ -1,17 +1,18 @@
-const XlsxPopulate = require('xlsx-populate');
-const getHash = require('./hash.js');
-const fs = require('fs');
-const logs = require('./logs.js');
-const { getReplaceConfig } = require('../../store/index.js');
+import xlsx from 'xlsx-populate';
+import getHash from './hash.js';
+import { existsSync, writeFileSync, readFileSync } from 'fs';
+import logs from './logs.js';
+import { getReplaceConfig } from '../../store/index.js';
+import { bankRouter, allowBanks } from '../banks/mainConroller.js';
 
-const existFile = fs.existsSync('./ogrns.json');
+const existFile = existsSync('./ogrns.json');
 
 if (!existFile) {
-  fs.writeFileSync('./ogrns.json', JSON.stringify([]));
+  writeFileSync('./ogrns.json', JSON.stringify([]));
 }
 
-const regions = JSON.parse(fs.readFileSync('./data.json'));
-let ogrns = JSON.parse(fs.readFileSync('./ogrns.json', 'utf-8') || []);
+const regions = JSON.parse(readFileSync('./data.json'));
+let ogrns = JSON.parse(readFileSync('./ogrns.json', 'utf-8') || []);
 
 async function main(dir, result, config, callback, options) {
   const hash = getHash();
@@ -40,7 +41,7 @@ async function main(dir, result, config, callback, options) {
 
   const date = new Date();
 
-  XlsxPopulate.fromFileAsync('./default.xlsx').then(async (workbook) => {
+  xlsx.fromFileAsync('./default.xlsx').then(async (workbook) => {
     Object.entries(config[type]).forEach(async ([key, value]) => {
       const headers = value
         .split(', ')
@@ -106,7 +107,14 @@ async function main(dir, result, config, callback, options) {
             }
           });
 
-          headers.forEach((header) => {
+          headers.forEach(async (header) => {
+            if (allowBanks.includes(header)) {
+              row[header] = await bankRouter(header, {
+                phone: getReplaceConfig()['Телефон'].find((key) => row[key]),
+                inn: row['инн'],
+              });
+            }
+
             if (row[header]) {
               workbook
                 .sheet(0)
@@ -134,13 +142,7 @@ async function main(dir, result, config, callback, options) {
 }
 
 async function saveOgrns() {
-  fs.writeFileSync('./ogrns.json', JSON.stringify(ogrns));
+  writeFileSync('./ogrns.json', JSON.stringify(ogrns));
 }
 
-//document.querySelector('#clear').addEventListener('click', () => {
-//ogrns = [];
-
-//saveOgrns();
-//});
-
-module.exports = main;
+export default main;

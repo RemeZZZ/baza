@@ -1,6 +1,6 @@
 const password = '323323dffdsfsdfjeifjkrnkgnfdjgndlw';
 
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
   // достаём авторизационный заголовок
   const { authorization } = req.headers;
 

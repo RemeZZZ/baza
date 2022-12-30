@@ -1,12 +1,12 @@
-const router = require('express').Router();
-const auth = require('../middlewares/auth');
-const { onLogin } = require('../controllers/login.js');
-const {
-  getDefaultConfig,
-  getUsersConfig,
-  getReplaceConfig,
-  setDefaultConfig,
-} = require('../controllers/configs.js');
+import express from 'express';
+import auth from '../middlewares/auth.js';
+import { onLogin } from '../controllers/login.js';
+import config from '../controllers/configs.js';
+
+const { getDefaultConfig, getUsersConfig, getReplaceConfig, setDefaultConfig } =
+  config;
+
+const router = express.Router();
 
 router.post('/login', onLogin);
 
@@ -20,4 +20,4 @@ router.post('/setDefaultConfig', setDefaultConfig);
 
 router.get('/test', (req, res) => res.send('ok2'));
 
-module.exports = router;
+export default router;

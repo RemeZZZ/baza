@@ -1,9 +1,9 @@
-const XlsxPopulate = require('xlsx-populate');
+import xlsx from 'xlsx-populate';
 
-const { getReplaceConfig } = require('../../store/index.js');
+import { getReplaceConfig } from '../../store/index.js';
 
 function main(dir, callback) {
-  XlsxPopulate.fromFileAsync(dir).then((workbook) => {
+  xlsx.fromFileAsync(dir).then((workbook) => {
     const table = workbook.sheet(0).usedRange().value();
 
     table[0] = table[0].map((key, index) => {
@@ -69,4 +69,4 @@ function main(dir, callback) {
   });
 }
 
-module.exports = main;
+export default main;
