@@ -4,7 +4,6 @@ import { existsSync, writeFileSync, readFileSync } from 'fs';
 import logs from './logs.js';
 import { getReplaceConfig } from '../../store/index.js';
 import { bankRouter, allowBanks } from '../banks/mainConroller.js';
-import { resolve } from 'path';
 
 const existFile = existsSync('./ogrns.json');
 
@@ -110,7 +109,7 @@ async function main(dir, result, config, callback, options) {
             }
           });
 
-          headers.forEach(async (header) => {
+          headers.forEach((header) => {
             if (allowBanks.includes(header)) {
               const promise = new Promise((resolve, reject) => {
                 bankRouter(header, {
@@ -141,7 +140,11 @@ async function main(dir, result, config, callback, options) {
         });
     });
 
+    console.log(promises);
+
     await Promise.all(promises);
+
+    console.log('done');
 
     const finalPatch = `./${dir}/${date.getDate()}.${
       date.getMonth() + 1 >= 10
