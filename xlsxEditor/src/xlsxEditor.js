@@ -109,8 +109,8 @@ async function main(dir, result, config, callback, options) {
             }
           });
 
-          headers.forEach((header, index) => {
-            if (allowBanks.includes(header) && index) {
+          headers.forEach((header, rowIndex) => {
+            if (allowBanks.includes(header) && rowIndex) {
               const promise = new Promise((resolve, reject) => {
                 console.log(
                   row,
