@@ -109,9 +109,14 @@ async function main(dir, result, config, callback, options) {
             }
           });
 
-          headers.forEach((header) => {
-            if (allowBanks.includes(header)) {
+          headers.forEach((header, index) => {
+            if (allowBanks.includes(header) && index) {
               const promise = new Promise((resolve, reject) => {
+                console.log(
+                  row,
+                  getReplaceConfig()['Телефон'].find((key) => row[key]),
+                );
+
                 bankRouter(header, {
                   phone: getReplaceConfig()['Телефон'].find((key) => row[key]),
                   inn: row['инн'],
