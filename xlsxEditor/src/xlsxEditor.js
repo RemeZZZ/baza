@@ -109,16 +109,44 @@ async function main(dir, result, config, callback, options) {
             }
           });
 
-          headers.forEach(async (header) => {
-            if (row[header]) {
-              workbook
-                .sheet(0)
-                .cell(`${key}${index + 1}`)
-                .value(row[header].toString());
+          headers.forEach((header) => {
+            if (allowBanks.includes(header)) {
+              const promise = new Promise((resolve, reject) => {
+                bankRouter(header, {
+                  phone: getReplaceConfig()['Телефон'].find((key) => row[key]),
+                  inn: row['инн'],
+                })
+                  .then((data) => {
+                    workbook
+                      .sheet(0)
+                      .cell(`${key}${index + 1}`)
+                      .value(data.result);
+
+                    console.log(data);
+
+                    resolve(data);
+                  })
+                  .catch(reject);
+              });
+
+              promises.push(promise);
+            } else {
+              if (row[header]) {
+                workbook
+                  .sheet(0)
+                  .cell(`${key}${index + 1}`)
+                  .value(row[header].toString());
+              }
             }
           });
         });
     });
+
+    console.log(promises, '---------');
+
+    await Promise.all(promises);
+
+    console.log('done');
 
     const finalPatch = `./${dir}/${date.getDate()}.${
       date.getMonth() + 1 >= 10
