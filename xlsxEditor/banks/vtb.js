@@ -20,6 +20,10 @@ export default async function check(inn) {
 }
 
 setInterval(async () => {
+  if (!promisesQueue.length) {
+    return;
+  }
+
   const result = await fetch('http://localhost:3102/check', {
     method: 'POST',
 
@@ -31,7 +35,7 @@ setInterval(async () => {
     body: JSON.stringify({
       leads: promisesQueue.map((item) => {
         return {
-          inn: item.inn,
+          inn: item.id,
         };
       }),
     }),
