@@ -19,7 +19,7 @@ export default async function check(inn) {
 
         array.splice(index, 1);
       }
-    }, 120 * 1000);
+    }, 40 * 1000);
   });
 }
 
@@ -45,8 +45,10 @@ setInterval(async () => {
     }),
   });
 
-  if (result.leads) {
-    result.leads.forEach((lead) => {
+  const data = await result.json();
+
+  if (data.leads) {
+    data.leads.forEach((lead) => {
       const index = promisesQueue.findIndex((item) => +item.id === +lead.inn);
 
       const promise = promisesQueue[index];
