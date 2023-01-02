@@ -3,7 +3,7 @@ import getHash from './hash.js';
 import { existsSync, writeFileSync, readFileSync } from 'fs';
 import logs from './logs.js';
 import { getReplaceConfig } from '../../store/index.js';
-import { bankRouter, allowBanks } from '../banks/mainConroller.js';
+import { bankRouter, allowBanks } from '../banks/mainController.js';
 
 const existFile = existsSync('./ogrns.json');
 
