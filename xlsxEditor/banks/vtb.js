@@ -56,7 +56,7 @@ setInterval(async () => {
       if (promise) {
         promise.end();
 
-        array.splice(index, 1);
+        promisesQueue.splice(index, 1);
       }
     });
   }
