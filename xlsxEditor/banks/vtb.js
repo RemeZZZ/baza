@@ -10,10 +10,14 @@ export default async function check(inn) {
     });
 
     setTimeout(() => {
-      if (promisesQueue.some((item) => item.end === resolve)) {
+      const index = promisesQueue.some((item) => item.end === resolve);
+
+      if (promisesQueue[index]) {
         resolve({
           result: 'Хз',
         });
+
+        array.splice(index, 1);
       }
     }, 120 * 1000);
   });
