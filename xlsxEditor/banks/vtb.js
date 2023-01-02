@@ -49,7 +49,9 @@ setInterval(async () => {
 
   if (data.leads) {
     data.leads.forEach((lead) => {
-      const index = promisesQueue.findIndex((item) => +item.id === +lead.inn);
+      const index = promisesQueue.findIndex(
+        (item) => `${item.id}` === `${lead.inn}`,
+      );
 
       const promise = promisesQueue[index];
 
