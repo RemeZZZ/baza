@@ -54,7 +54,7 @@ setInterval(async () => {
       const promise = promisesQueue[index];
 
       if (promise) {
-        promise.end();
+        promise.end(lead);
 
         promisesQueue.splice(index, 1);
       }
