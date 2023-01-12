@@ -10,16 +10,18 @@ export default async function check(inn) {
     });
 
     setTimeout(() => {
-      const index = promisesQueue.some((item) => item.end === resolve);
+      const index = promisesQueue.findIndex((item) => item.id === inn);
+
+      console.log(promisesQueue[index]);
 
       if (promisesQueue[index]) {
         resolve({
           result: 'Хз',
         });
 
-        array.splice(index, 1);
+        promisesQueue.splice(index, 1);
       }
-    }, 40 * 1000);
+    }, 90 * 1000);
   });
 }
 
@@ -28,38 +30,40 @@ setInterval(async () => {
     return;
   }
 
-  const result = await fetch('http://localhost:3102/check', {
-    method: 'POST',
+  try {
+    const result = await fetch('http://localhost:3102/check', {
+      method: 'POST',
 
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: 'Bhhghgltlttppp6643mm',
-    },
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: 'Bhhghgltlttppp6643mm',
+      },
 
-    body: JSON.stringify({
-      leads: promisesQueue.map((item) => {
-        return {
-          inn: item.id,
-        };
+      body: JSON.stringify({
+        leads: promisesQueue.map((item) => {
+          return {
+            inn: item.id,
+          };
+        }),
       }),
-    }),
-  });
-
-  const data = await result.json();
-
-  if (data.leads) {
-    data.leads.forEach((lead) => {
-      const index = promisesQueue.findIndex(
-        (item) => `${item.id}` === `${lead.inn}`,
-      );
-
-      const promise = promisesQueue[index];
-
-      if (promise) {
-        promise.end(lead);
-
-        promisesQueue.splice(index, 1);
-      }
     });
-  }
-}, 10 * 1000);
+
+    const data = await result.json();
+
+    if (data.leads) {
+      data.leads.forEach((lead) => {
+        const index = promisesQueue.findIndex(
+          (item) => `${item.id}` === `${lead.inn}`,
+        );
+
+        const promise = promisesQueue[index];
+
+        if (promise) {
+          promise.end(lead);
+
+          promisesQueue.splice(index, 1);
+        }
+      });
+    }
+  } catch {}
+}, 50 * 1000);

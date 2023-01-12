@@ -112,10 +112,12 @@ async function main(dir, result, config, callback, options) {
           headers.forEach((header) => {
             if (allowBanks.includes(header)) {
               const promise = new Promise((resolve, reject) => {
+                const inn = row['инн'].toString();
+
                 bankRouter(header, {
                   phone:
                     row[getReplaceConfig()['Телефон'].find((key) => row[key])],
-                  inn: row['инн'],
+                  inn: inn.length === 11 || inn.length === 9 ? `0${inn}` : inn,
                 })
                   .then((data) => {
                     workbook
@@ -143,11 +145,7 @@ async function main(dir, result, config, callback, options) {
         });
     });
 
-    console.log(promises, '---------');
-
     await Promise.all(promises);
-
-    console.log('done');
 
     const finalPatch = `./${dir}/${date.getDate()}.${
       date.getMonth() + 1 >= 10

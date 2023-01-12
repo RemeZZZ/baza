@@ -12,6 +12,10 @@ export function getReplaceConfig() {
   return JSON.parse(readFileSync(`${dir}/data/replace.config.json`, 'utf-8'));
 }
 
+export function getTargetsConfig() {
+  return JSON.parse(readFileSync(`${dir}/data/targets.config.json`, 'utf-8'));
+}
+
 export function setDefaultConfig(config) {
   writeFileSync(`${dir}/data/config.json`, JSON.stringify(config));
 }
@@ -22,4 +26,8 @@ export function setUsersConfig(config) {
 
 export function setReplaceConfig(config) {
   writeFileSync(`${dir}/data/replace.config.json`, JSON.stringify(config));
+}
+
+export function setTargetsConfig(config) {
+  writeFileSync(`${dir}/data/targets.config.json`, JSON.stringify(config));
 }

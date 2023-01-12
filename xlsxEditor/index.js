@@ -7,6 +7,7 @@ import logs from './src/logs.js';
 import http from 'http';
 import url from 'url';
 import { getDefaultConfig, getUsersConfig } from '../store/index.js';
+import { sendLeads } from './skorozwon/mainController.js';
 
 function main() {
   const queue = [{}, {}, {}];
@@ -39,9 +40,13 @@ function main() {
             (dir) => {
               logs(`${dir} отправлен ${key}`);
 
-              getUsersConfig().customers[key].forEach((id) =>
-                queue.push({ id, dir }),
-              );
+              getUsersConfig().customers[key].forEach((id) => {
+                if (key === 'Скорозвон') {
+                  sendLeads(dir);
+                }
+
+                queue.push({ id, dir });
+              });
             },
             {
               double: value.double,
@@ -74,9 +79,13 @@ function main() {
             (dir) => {
               logs(`${dir} отправлен ${key}`);
 
-              getUsersConfig().customers[key].forEach((id) =>
-                queue.push({ id, dir }),
-              );
+              getUsersConfig().customers[key].forEach((id) => {
+                if (key === 'Скорозвон') {
+                  sendLeads(dir);
+                }
+
+                queue.push({ id, dir });
+              });
             },
             {
               double: value.double,
@@ -110,9 +119,13 @@ function main() {
               (dir) => {
                 logs(`${dir} отправлен ${key}`);
 
-                getUsersConfig().customers[key].forEach((id) =>
-                  queue.push({ id, dir }),
-                );
+                getUsersConfig().customers[key].forEach((id) => {
+                  if (key === 'Скорозвон') {
+                    sendLeads(dir);
+                  }
+
+                  queue.push({ id, dir });
+                });
               },
               {
                 double: value.double,
