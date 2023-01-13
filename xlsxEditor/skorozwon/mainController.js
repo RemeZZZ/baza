@@ -24,7 +24,7 @@ export async function sendLeads(xlsxFileDir) {
 
       body: JSON.stringify({
         leads: table,
-        tags: ['Локальный тест2'],
+        tags: ['Сервер тест'],
         targets: targets,
       }),
     });
