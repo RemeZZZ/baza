@@ -13,20 +13,22 @@ export async function sendLeads(xlsxFileDir) {
     return array;
   }, []);
 
-  fetch('http://localhost:4101/sendLeads', {
-    method: 'POST',
+  try {
+    fetch('http://localhost:4101/sendLeads', {
+      method: 'POST',
 
-    headers: {
-      'Content-Type': 'application/json',
-      authorization: 'cvfgfhhrefgh2nc',
-    },
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: 'cvfgfhhrefgh2nc',
+      },
 
-    body: JSON.stringify({
-      leads: table,
-      tags: ['тестовый5'],
-      targets: targets,
-    }),
-  });
+      body: JSON.stringify({
+        leads: table,
+        tags: ['Локальный тест2'],
+        targets: targets,
+      }),
+    });
+  } catch {}
 }
 
 async function xlsxFileParser(dir) {
@@ -56,17 +58,17 @@ async function xlsxFileParser(dir) {
       const ogrnkey = ogrnkeys.find((key) => item[key]);
 
       const row = {
-        name: `${item['фамилия']} ${item['имя']} ${item['отчество']}`,
+        name:
+          item['фио'] ||
+          `${item['фамилия']} ${item['имя']} ${item['отчество']}`,
         phones: [item[phoneKey]],
         address: item['адрес'],
-        custom_fields: {
-          FIELD_20000002891: item['инн'],
-          FIELD_20000002460: item[ogrnkey],
-          FIELD_20000002888: item['открытие'] || 'хз',
-          FIELD_20000002887: item['тиньков'] || 'хз',
-          FIELD_20000002886: item['альфа'] || 'хз',
-          FIELD_20000002885: item['втб'] || 'хз',
-        },
+        inn: item['инн'],
+        ogrn: item[ogrnkey],
+        otcritie: item['открытие'] || 'хз',
+        tinkov: item['тиньков'] || 'хз',
+        alpha: item['альфа'] || 'хз',
+        vtb: item['втб'] || 'хз',
       };
 
       array.push(row);

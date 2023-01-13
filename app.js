@@ -29,3 +29,5 @@ app.listen(3001, () => {
 });
 
 start();
+
+process.on('uncaughtException', (event) => {});
