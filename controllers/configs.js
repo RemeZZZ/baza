@@ -2,7 +2,9 @@ import {
   getDefaultConfig,
   getReplaceConfig,
   getUsersConfig,
+  getTargetsConfig,
   setDefaultConfig,
+  setTargetsConfig,
 } from '../store/index.js';
 
 export default {
@@ -18,8 +20,17 @@ export default {
     response.send(getReplaceConfig());
   },
 
+  getTargetsConfig(request, response) {
+    response.send(getTargetsConfig());
+  },
+
   setDefaultConfig(request, response) {
     setDefaultConfig(request.body);
+
+    response.send({ message: 'ok' });
+  },
+  setTargetsConfig(request, response) {
+    setTargetsConfig(request.body);
 
     response.send({ message: 'ok' });
   },

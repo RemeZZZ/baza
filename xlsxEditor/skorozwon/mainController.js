@@ -2,8 +2,10 @@ import xlsx from 'xlsx-populate';
 import fetch from 'node-fetch';
 import { getTargetsConfig, getReplaceConfig } from '../../store/index.js';
 
-export async function sendLeads(xlsxFileDir) {
+export async function sendLeads(xlsxFileDir, tags = 'Тег не найден') {
   const table = await xlsxFileParser(xlsxFileDir);
+
+  console.log(tags);
 
   const targets = getTargetsConfig().reduce((array, item) => {
     if (item.active) {
@@ -24,7 +26,7 @@ export async function sendLeads(xlsxFileDir) {
 
       body: JSON.stringify({
         leads: table,
-        tags: ['Сервер тест'],
+        tags: tags.split(', '),
         targets: targets,
       }),
     });

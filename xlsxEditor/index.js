@@ -42,7 +42,46 @@ function main() {
 
               getUsersConfig().customers[key].forEach((id) => {
                 if (key === 'Скорозвон') {
-                  sendLeads(dir);
+                  sendLeads(dir, value.tags[result.type]);
+                }
+
+                queue.push({ id, dir });
+              });
+            },
+            {
+              double: value.double,
+              numberIsNumber: value.numberIsNumber,
+              customer: key,
+            },
+          );
+        }
+      });
+    });
+  });
+
+  observer.on(dirname + '/files/Поставщики/База', (file) => {
+    if (sup1.includes(file)) return;
+
+    sup1.push(file);
+
+    const supplier = getDefaultConfig().suppliers.База;
+
+    xlsxParser(file, (result) => {
+      Object.entries(supplier.customers).forEach(([key, value]) => {
+        if (value[result.type]) {
+          if (result.new && !value[result.new]) {
+            return;
+          }
+          xlsxEditor(
+            `/files/Заказчики/${key.replace('cus_', '')}/${result.type}`,
+            result,
+            value.columns,
+            (dir) => {
+              logs(`${dir} отправлен ${key}`);
+
+              getUsersConfig().customers[key].forEach((id) => {
+                if (key === 'Скорозвон') {
+                  sendLeads(dir, value.tags[result.type]);
                 }
 
                 queue.push({ id, dir });
@@ -81,7 +120,7 @@ function main() {
 
               getUsersConfig().customers[key].forEach((id) => {
                 if (key === 'Скорозвон') {
-                  sendLeads(dir);
+                  sendLeads(dir, value.tags[result.type]);
                 }
 
                 queue.push({ id, dir });
@@ -121,7 +160,7 @@ function main() {
 
                 getUsersConfig().customers[key].forEach((id) => {
                   if (key === 'Скорозвон') {
-                    sendLeads(dir);
+                    sendLeads(dir, value.tags[result.type]);
                   }
 
                   queue.push({ id, dir });
@@ -140,13 +179,12 @@ function main() {
   });
 
   async function onDocument(file) {
-    const suppliers = Object.entries(getUsersConfig().suppliers);
+    const suppliers = getUsersConfig().suppliers;
+    const supplier = suppliers[file.userId];
 
-    console.log(suppliers, file.userId);
-
-    const supplier = suppliers.find((item) => item[1] === file.userId);
-
-    console.log(supplier);
+    if (!supplier) {
+      return;
+    }
 
     const exitName = file.name.split('.').pop();
 
