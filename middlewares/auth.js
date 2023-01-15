@@ -2,7 +2,6 @@ const adminPassword = '323323dffdsfsdfjeifjkrnkgnfdjgndlw';
 const managerPassword = 'k6dsjgs1dfdsjf4sFFdbcssrffgb0j9n';
 
 export function adminAuth(req, res, next) {
-  // достаём авторизационный заголовок
   const { authorization } = req.headers;
 
   if (authorization !== adminPassword) {
@@ -18,8 +17,6 @@ export function adminAuth(req, res, next) {
 
 export function managerAuth(req, res, next) {
   const { authorization } = req.headers;
-
-  console.log(authorization);
 
   if (authorization === adminPassword) {
     req.userType = 'admin';
