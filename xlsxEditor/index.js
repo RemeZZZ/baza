@@ -190,14 +190,14 @@ function main() {
 
     if (exitName !== 'xlsx') return;
 
-    const finalDir = `${dirname}/files/Поставщики/${supplier[0]}/${hash(10)}.${
+    const finalDir = `${dirname}/files/Поставщики/${supplier}/${hash(10)}.${
       file.name
     }`;
 
     logs(
-      `Получен файл (${file.name}) от ${
-        supplier[0]
-      } и временно переименован в ${hash(10)}.${file.name}`,
+      `Получен файл (${
+        file.name
+      }) от ${supplier} и временно переименован в ${hash(10)}.${file.name}`,
     );
 
     fs.renameSync(`${dirname}/${file.path}`, finalDir);

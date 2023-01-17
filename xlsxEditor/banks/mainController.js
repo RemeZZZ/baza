@@ -16,8 +16,6 @@ export async function bankRouter(bankName, body) {
     companyInfo[key] = value.toString();
   });
 
-  console.log(companyInfo);
-
   if (bankName === 'альфа') {
     return await alpha(companyInfo.inn, companyInfo.phone);
   }
@@ -31,6 +29,6 @@ export async function bankRouter(bankName, body) {
   }
 
   if (bankName === 'тиньков') {
-    return await tinkov(companyInfo.inn);
+    return await tinkov(companyInfo.inn, companyInfo.phone);
   }
 }
