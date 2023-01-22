@@ -56,14 +56,21 @@ function main(dir, callback) {
       header.includes(key),
     )
       ? false
-      : 'НОВОРЕГ';
+      : 'ПредНовоРег';
 
     const type = +data[1]['инн'] > 10000000000 ? 'ИП' : 'ООО';
 
+    console.log({
+      fileType: fileType,
+      type: newReg || type,
+      legalType: type,
+      data: data,
+    });
+
     callback({
       fileType: fileType,
-      type: type,
-      new: newReg,
+      type: newReg || type,
+      legalType: type,
       data: data,
     });
   });

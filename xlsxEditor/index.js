@@ -30,9 +30,6 @@ function main() {
     xlsxParser(file, (result) => {
       Object.entries(supplier.customers).forEach(([key, value]) => {
         if (value[result.type]) {
-          if (result.new && !value[result.new]) {
-            return;
-          }
           xlsxEditor(
             `/files/Заказчики/${key.replace('cus_', '')}/${result.type}`,
             result,
@@ -69,9 +66,6 @@ function main() {
     xlsxParser(file, (result) => {
       Object.entries(supplier.customers).forEach(([key, value]) => {
         if (value[result.type]) {
-          if (result.new && !value[result.new]) {
-            return;
-          }
           xlsxEditor(
             `/files/Заказчики/${key.replace('cus_', '')}/${result.type}`,
             result,
@@ -108,9 +102,6 @@ function main() {
     xlsxParser(file, (result) => {
       Object.entries(supplier.customers).forEach(([key, value]) => {
         if (value[result.type]) {
-          if (result.new && !value[result.new]) {
-            return;
-          }
           xlsxEditor(
             `/files/Заказчики/${key.replace('cus_', '')}/${result.type}`,
             result,
@@ -148,9 +139,6 @@ function main() {
       Object.entries(supplier.customers).forEach(([key, value]) => {
         if (value[result.type]) {
           if (value[result.fileType]) {
-            if (result.new && !value[result.new]) {
-              return;
-            }
             xlsxEditor(
               `/files/Заказчики/${key.replace('cus_', '')}/${result.type}`,
               result,

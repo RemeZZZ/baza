@@ -1,6 +1,13 @@
 import xlsx from 'xlsx-populate';
 import getHash from './hash.js';
-import { existsSync, writeFileSync, readFileSync } from 'fs';
+import {
+  existsSync,
+  writeFileSync,
+  readFileSync,
+  mkdirSync,
+  access,
+  mkdir,
+} from 'fs';
 import logs from './logs.js';
 import { getReplaceConfig } from '../../store/index.js';
 import { bankRouter, allowBanks } from '../banks/mainController.js';
@@ -155,11 +162,13 @@ async function main(dir, result, config, callback, options) {
 
     logs(`Файл ${finalPatch} имеет ${data.length} строк`);
 
-    await workbook.toFileAsync(finalPatch);
+    mkdir(`./${dir}/`, { recursive: true }, async (error) => {
+      await workbook.toFileAsync(finalPatch);
 
-    callback(finalPatch);
+      callback(finalPatch);
 
-    saveOgrns();
+      saveOgrns();
+    });
   });
 }
 
