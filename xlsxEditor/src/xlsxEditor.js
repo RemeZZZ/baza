@@ -17,8 +17,6 @@ const existFile = existsSync('./ogrns.json');
 if (!existFile) {
   writeFileSync('./ogrns.json', JSON.stringify([]));
 }
-
-const regions = JSON.parse(readFileSync('./data.json'));
 let ogrns = JSON.parse(readFileSync('./ogrns.json', 'utf-8') || []);
 
 async function main(dir, result, config, callback, options) {
@@ -67,33 +65,6 @@ async function main(dir, result, config, callback, options) {
           return existsInn && existsPhone;
         })
         .forEach((row, index) => {
-          const ogrnKey = getReplaceConfig()['ОГРН'].find((key) => row[key]);
-          const ogrn = row[ogrnKey]?.toString();
-
-          if (
-            !(
-              data[0].hasOwnProperty('индекс') ||
-              data[0].hasOwnProperty('адрес') ||
-              data[0].hasOwnProperty('город')
-            )
-          ) {
-            if (ogrn) {
-              const region = ogrn[3] + ogrn[4];
-
-              if (index === 0) {
-                workbook
-                  .sheet(0)
-                  .cell(`G${index + 1}`)
-                  .value('Адрес');
-              } else {
-                workbook
-                  .sheet(0)
-                  .cell(`G${index + 1}`)
-                  .value(regions[region]);
-              }
-            }
-          }
-
           getReplaceConfig()['Телефон'].forEach((item) => {
             if (row[item] && index) {
               row[item] = row[item].toString().replace(/\D+/g, '');
@@ -131,8 +102,6 @@ async function main(dir, result, config, callback, options) {
                       .sheet(0)
                       .cell(`${key}${index + 1}`)
                       .value(index ? data.result : header);
-
-                    console.log(data);
 
                     resolve(data);
                   })

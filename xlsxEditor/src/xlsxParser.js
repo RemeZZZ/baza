@@ -1,6 +1,9 @@
 import xlsx from 'xlsx-populate';
+import fs from 'fs';
 
 import { getReplaceConfig } from '../../store/index.js';
+
+const regions = JSON.parse(fs.readFileSync('./data.json'));
 
 function main(dir, callback) {
   xlsx.fromFileAsync(dir).then((workbook) => {
@@ -17,22 +20,43 @@ function main(dir, callback) {
 
     const header = table[0].map((cell) => cell?.toLowerCase());
 
-    const data = table.reduce((rows, row) => {
-      rows.push(
-        row.reduce((cells, cell, cellIndex) => {
-          const key = header[cellIndex];
+    const data = table.reduce((rows, row, index) => {
+      const resultRow = row.reduce((cells, cell, cellIndex) => {
+        const key = header[cellIndex];
 
-          if (cells[key]) {
-            cells[key];
-
-            return cells;
-          }
-
-          cells[key] = cell;
+        if (cells[key]) {
+          cells[key];
 
           return cells;
-        }, {}),
-      );
+        }
+
+        cells[key] = cell;
+
+        return cells;
+      }, {});
+
+      const ogrnKey = getReplaceConfig()['ОГРН'].find((key) => resultRow[key]);
+      const ogrn = resultRow[ogrnKey]?.toString();
+
+      if (
+        !(
+          resultRow.hasOwnProperty('индекс') ||
+          resultRow.hasOwnProperty('адрес') ||
+          resultRow.hasOwnProperty('город')
+        )
+      ) {
+        if (ogrn) {
+          const region = ogrn[3] + ogrn[4];
+
+          if (index === 0) {
+            resultRow['адрес'] = 'Адрес';
+          } else {
+            resultRow['адрес'] = regions[region];
+          }
+        }
+      }
+
+      rows.push(resultRow);
 
       return rows;
     }, []);

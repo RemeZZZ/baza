@@ -30,4 +30,6 @@ app.listen(3001, () => {
 
 start();
 
-process.on('uncaughtException', (event) => {});
+process.on('uncaughtException', (event) => {
+  console.log(event);
+});
