@@ -92,6 +92,17 @@ async function main(dir, result, config, callback, options) {
               const promise = new Promise((resolve, reject) => {
                 const inn = row['инн'].toString();
 
+                setTimeout(() => {
+                  workbook
+                    .sheet(0)
+                    .cell(`${key}${index + 1}`)
+                    .value(index ? 'хз' : header);
+
+                  resolve({ result: 'хз' });
+
+                  console.log('СРАБОТАЛ АВАРИЙНЫЙ ТАЙМАУТ');
+                }, 1000 * 700);
+
                 bankRouter(header, {
                   phone:
                     row[getReplaceConfig()['Телефон'].find((key) => row[key])],

@@ -5,11 +5,9 @@ import { getTargetsConfig, getReplaceConfig } from '../../store/index.js';
 export async function sendLeads(xlsxFileDir, tags = 'Тег не найден') {
   const table = await xlsxFileParser(xlsxFileDir);
 
-  console.log(tags);
-
   const targets = getTargetsConfig().reduce((array, item) => {
     if (item.active) {
-      array.push(item.id);
+      array.push(item);
     }
 
     return array;
@@ -59,12 +57,20 @@ async function xlsxFileParser(dir) {
       const phoneKey = phonekeys.find((key) => item[key]);
       const ogrnkey = ogrnkeys.find((key) => item[key]);
 
+      const region = item['инн'] ? `${item['инн'][0]}${item['инн'][1]}` : '';
+
       const row = {
         name:
           item['фио'] ||
           `${item['фамилия']} ${item['имя']} ${item['отчество']}`,
+
+        orgName:
+          item['наименование юл'] ||
+          item['название юл'] ||
+          item['название компании'] ||
+          '',
         phones: [item[phoneKey]],
-        address: item['адрес'],
+        address: item['адрес'] || item['регион'] || region,
         inn: item['инн'],
         ogrn: item[ogrnkey],
         otcritie: item['открытие'] || 'хз',
