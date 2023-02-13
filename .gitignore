@@ -22,8 +22,9 @@ auth.json
 
 .env
 
-.rar
-.zip
-.log
+*.rar
+*.zip
+*.log
+*.json
 
 user.session
