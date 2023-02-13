@@ -4,39 +4,49 @@ import fs from 'fs';
 import { getReplaceConfig } from '../../store/index.js';
 
 const regions = JSON.parse(fs.readFileSync('./data.json'));
-
 function main(dir, callback) {
+  const replaceConfig = getReplaceConfig();
+
   xlsx.fromFileAsync(dir).then((workbook) => {
     const table = workbook.sheet(0).usedRange().value();
 
-    table[0] = table[0].map((key, index) => {
-      if (!key) {
-        const isPhone = /^[\d\+][\d\(\)\ -]{4,14}\d$/.test(table[1][index]);
+    table[0] = table[0]
+      .map((key, index) => {
+        if (!key) {
+          const isPhone = /^[\d\+][\d\(\)\ -]{4,14}\d$/.test(table[1][index]);
 
-        if (isPhone) return 'Телефон';
-      }
-      return key;
-    });
+          if (isPhone) return 'Телефон';
+        }
+        return key;
+      })
+      .map((cell) => {
+        const key = Object.entries(replaceConfig).find(([key, value]) => {
+          return value.some(
+            (item) => item.toLowerCase() === cell?.toLowerCase(),
+          );
+        });
 
-    const header = table[0].map((cell) => cell?.toLowerCase());
+        if (key) {
+          console.log(key[0]);
+
+          return key[0]?.toLowerCase();
+        }
+
+        return cell?.toLowerCase();
+      });
+
+    const header = table[0];
 
     const data = table.reduce((rows, row, index) => {
       const resultRow = row.reduce((cells, cell, cellIndex) => {
         const key = header[cellIndex];
-
-        if (cells[key]) {
-          cells[key];
-
-          return cells;
-        }
 
         cells[key] = cell;
 
         return cells;
       }, {});
 
-      const ogrnKey = getReplaceConfig()['ОГРН'].find((key) => resultRow[key]);
-      const ogrn = resultRow[ogrnKey]?.toString();
+      const ogrn = resultRow['огрн']?.toString();
 
       if (
         !(
@@ -76,20 +86,9 @@ function main(dir, callback) {
       fileType = 'TAT';
     }
 
-    const newReg = getReplaceConfig()['ОГРН'].some((key) =>
-      header.includes(key),
-    )
-      ? false
-      : 'ПредНовоРег';
+    const newReg = header.includes('огрн') ? false : 'ПредНовоРег';
 
     const type = +data[1]['инн'] > 10000000000 ? 'ИП' : 'ООО';
-
-    console.log({
-      fileType: fileType,
-      type: newReg || type,
-      legalType: type,
-      data: data,
-    });
 
     callback({
       fileType: fileType,

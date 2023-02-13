@@ -12,20 +12,13 @@ import { sendLeads } from './skorozwon/mainController.js';
 function main() {
   const queue = [{}, {}, {}];
 
-  const sup1 = [];
-  const sup2 = [];
-  const sup3 = [];
-
   const dirname = process.cwd().replaceAll('\\', '/');
 
   const observer = new Observer();
 
   observer.on(dirname + '/files/Поставщики/Дима', (file) => {
-    if (sup1.includes(file)) return;
-
-    sup1.push(file);
-
     const supplier = getDefaultConfig().suppliers.Дима;
+    const baza = getDefaultConfig().suppliers.База;
 
     xlsxParser(file, (result) => {
       Object.entries(supplier.customers).forEach(([key, value]) => {
@@ -42,7 +35,9 @@ function main() {
                   sendLeads(dir, value.tags[result.type]);
                 }
 
-                queue.push({ id, dir });
+                if (!baza.customers[key].timeout) {
+                  queue.push({ id, dir });
+                }
               });
             },
             {
@@ -57,11 +52,8 @@ function main() {
   });
 
   observer.on(dirname + '/files/Поставщики/База', (file) => {
-    if (sup1.includes(file)) return;
-
-    sup1.push(file);
-
     const supplier = getDefaultConfig().suppliers.База;
+    const baza = getDefaultConfig().suppliers.База;
 
     xlsxParser(file, (result) => {
       Object.entries(supplier.customers).forEach(([key, value]) => {
@@ -78,7 +70,9 @@ function main() {
                   sendLeads(dir, value.tags[result.type]);
                 }
 
-                queue.push({ id, dir });
+                if (!baza.customers[key].timeout) {
+                  queue.push({ id, dir });
+                }
               });
             },
             {
@@ -93,11 +87,8 @@ function main() {
   });
 
   observer.on(dirname + '/files/Поставщики/Оля', (file) => {
-    if (sup2.includes(file)) return;
-
-    sup2.push(file);
-
     const supplier = getDefaultConfig().suppliers.Оля;
+    const baza = getDefaultConfig().suppliers.База;
 
     xlsxParser(file, (result) => {
       Object.entries(supplier.customers).forEach(([key, value]) => {
@@ -114,7 +105,9 @@ function main() {
                   sendLeads(dir, value.tags[result.type]);
                 }
 
-                queue.push({ id, dir });
+                if (!baza.customers[key].timeout) {
+                  queue.push({ id, dir });
+                }
               });
             },
             {
@@ -129,11 +122,8 @@ function main() {
   });
 
   observer.on(dirname + '/files/Поставщики/Надя', (file) => {
-    if (sup3.includes(file)) return;
-
-    sup3.push(file);
-
     const supplier = getDefaultConfig().suppliers.Надя;
+    const baza = getDefaultConfig().suppliers.База;
 
     xlsxParser(file, (result) => {
       Object.entries(supplier.customers).forEach(([key, value]) => {
@@ -151,7 +141,9 @@ function main() {
                     sendLeads(dir, value.tags[result.type]);
                   }
 
-                  queue.push({ id, dir });
+                  if (!baza.customers[key].timeout) {
+                    queue.push({ id, dir });
+                  }
                 });
               },
               {

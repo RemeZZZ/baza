@@ -10,6 +10,7 @@ const {
   setDefaultConfig,
   getTargetsConfig,
   setTargetsConfig,
+  setReplaceConfig,
 } = config;
 
 const router = express.Router();
@@ -28,6 +29,7 @@ router.get('/usersConfig', getUsersConfig);
 router.get('/replaceConfig', getReplaceConfig);
 
 router.post('/setDefaultConfig', setDefaultConfig);
+router.post('/setReplaceConfig', setReplaceConfig);
 
 router.get('/test', (req, res) => res.send('ok2'));
 

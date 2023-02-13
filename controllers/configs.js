@@ -5,6 +5,7 @@ import {
   getTargetsConfig,
   setDefaultConfig,
   setTargetsConfig,
+  setReplaceConfig,
 } from '../store/index.js';
 
 export default {
@@ -31,6 +32,11 @@ export default {
   },
   setTargetsConfig(request, response) {
     setTargetsConfig(request.body);
+
+    response.send({ message: 'ok' });
+  },
+  setReplaceConfig(request, response) {
+    setReplaceConfig(request.body);
 
     response.send({ message: 'ok' });
   },

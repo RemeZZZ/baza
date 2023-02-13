@@ -9,7 +9,6 @@ import {
   mkdir,
 } from 'fs';
 import logs from './logs.js';
-import { getReplaceConfig } from '../../store/index.js';
 import { bankRouter, allowBanks } from '../banks/mainController.js';
 
 const existFile = existsSync('./ogrns.json');
@@ -27,8 +26,7 @@ async function main(dir, result, config, callback, options) {
   const { type } = result;
 
   const data = result.data.filter((row, index) => {
-    const ogrnKey = getReplaceConfig()['ОГРН'].find((key) => row[key]);
-    const ogrn = row[ogrnKey];
+    const ogrn = row['огрн'];
 
     if (!index || !ogrn) {
       return true;
@@ -38,8 +36,7 @@ async function main(dir, result, config, callback, options) {
   });
 
   data.forEach((row) => {
-    const ogrnKey = getReplaceConfig()['ОГРН'].find((key) => row[key]);
-    const ogrn = row[ogrnKey];
+    const ogrn = row['огрн'];
 
     if (ogrn) {
       ogrns.push(ogrn + options.customer);
@@ -56,36 +53,27 @@ async function main(dir, result, config, callback, options) {
         .map((header) => header?.toLowerCase());
 
       data
-        .filter((row) => {
-          const existsInn = row['инн'];
-          const existsPhone = getReplaceConfig()['Телефон'].some(
-            (key) => row[key],
-          );
-
-          return existsInn && existsPhone;
-        })
+        .filter((row) => row['инн'] && row['телефон'])
         .forEach((row, index) => {
-          getReplaceConfig()['Телефон'].forEach((item) => {
-            if (row[item] && index) {
-              row[item] = row[item].toString().replace(/\D+/g, '');
+          if (row['телефон'] && index) {
+            row['телефон'] = row['телефон'].toString().replace(/\D+/g, '');
 
-              if (row[item].length === 10) {
-                row[item] = `7${row[item]}`;
-              }
-              if (row[item].length === 11) {
-                const letters = row[item].split('');
-
-                if (letters[0] === '8') {
-                  letters[0] = 7;
-                }
-
-                row[item] = letters.join('');
-              }
-              if (options.numberIsNumber) {
-                row[item] = +row[item] || row[item];
-              }
+            if (row['телефон'].length === 10) {
+              row['телефон'] = `7${row['телефон']}`;
             }
-          });
+            if (row['телефон'].length === 11) {
+              const letters = row['телефон'].split('');
+
+              if (letters[0] === '8') {
+                letters[0] = 7;
+              }
+
+              row['телефон'] = letters.join('');
+            }
+            if (options.numberIsNumber) {
+              row['телефон'] = +row['телефон'] || row['телефон'];
+            }
+          }
 
           headers.forEach((header) => {
             if (allowBanks.includes(header)) {
@@ -101,11 +89,10 @@ async function main(dir, result, config, callback, options) {
                   resolve({ result: 'хз' });
 
                   console.log('СРАБОТАЛ АВАРИЙНЫЙ ТАЙМАУТ');
-                }, 1000 * 700);
+                }, 1000 * 2000);
 
                 bankRouter(header, {
-                  phone:
-                    row[getReplaceConfig()['Телефон'].find((key) => row[key])],
+                  phone: row['телефон'],
                   inn: inn.length === 11 || inn.length === 9 ? `0${inn}` : inn,
                 })
                   .then((data) => {
