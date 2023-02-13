@@ -3,7 +3,7 @@ import vtb from './vtb.js';
 import otcritie from './otcritie.js';
 import tinkov from './tinkov.js';
 
-export const allowBanks = ['альфа', 'втб', 'тиньков', 'псб'];
+export const allowBanks = ['альфа', 'втб', 'тиньков', 'тиньковт', 'псб'];
 
 export async function bankRouter(bankName, body) {
   if (!allowBanks.includes(bankName)) {
@@ -29,6 +29,10 @@ export async function bankRouter(bankName, body) {
   }
 
   if (bankName === 'тиньков') {
+    return await tinkov(companyInfo.inn, companyInfo.phone);
+  }
+
+  if (bankName === 'тиньковт') {
     return await tinkov(companyInfo.inn, companyInfo.phone);
   }
 }
