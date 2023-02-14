@@ -80,17 +80,6 @@ async function main(dir, result, config, callback, options) {
               const promise = new Promise((resolve, reject) => {
                 const inn = row['инн'].toString();
 
-                setTimeout(() => {
-                  workbook
-                    .sheet(0)
-                    .cell(`${key}${index + 1}`)
-                    .value(index ? 'хз' : header);
-
-                  resolve({ result: 'хз' });
-
-                  console.log('СРАБОТАЛ АВАРИЙНЫЙ ТАЙМАУТ');
-                }, 1000 * 2000);
-
                 bankRouter(header, {
                   phone: row['телефон'],
                   inn: inn.length === 11 || inn.length === 9 ? `0${inn}` : inn,
@@ -119,7 +108,11 @@ async function main(dir, result, config, callback, options) {
         });
     });
 
+    console.log('PROMISE START');
+
     await Promise.all(promises);
+
+    console.log('PROMISE END');
 
     const finalPatch = `./${dir}/${date.getDate()}.${
       date.getMonth() + 1 >= 10
