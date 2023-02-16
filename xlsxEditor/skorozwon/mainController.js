@@ -70,7 +70,7 @@ async function xlsxFileParser(dir) {
         inn: item['инн'],
         ogrn: item['огрн'],
         otcritie: item['открытие'] || 'хз',
-        tinkov: item['тиньков'] || 'хз',
+        tinkov: item['тиньков'] || item['тиньковт'] || 'хз',
         alpha: item['альфа'] || 'хз',
         vtb: item['втб'] || 'хз',
       };

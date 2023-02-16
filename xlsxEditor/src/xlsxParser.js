@@ -27,8 +27,6 @@ function main(dir, callback) {
         });
 
         if (key) {
-          console.log(key[0]);
-
           return key[0]?.toLowerCase();
         }
 
@@ -40,6 +38,10 @@ function main(dir, callback) {
     const data = table.reduce((rows, row, index) => {
       const resultRow = row.reduce((cells, cell, cellIndex) => {
         const key = header[cellIndex];
+
+        if (cells[key]) {
+          return cells;
+        }
 
         cells[key] = cell;
 

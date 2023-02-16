@@ -15,7 +15,7 @@ export default async function check(inn) {
       console.log(promisesQueue[index]);
 
       if (promisesQueue[index]) {
-        resolve({
+        promisesQueue[index].end({
           result: 'Хз',
         });
 
