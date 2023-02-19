@@ -13,22 +13,30 @@ export async function sendLeads(xlsxFileDir, tags = 'Тег не найден') 
     return array;
   }, []);
 
-  try {
-    fetch('http://localhost:4101/sendLeads', {
-      method: 'POST',
+  for (let i = 0; i < table.length; i += 200) {
+    const leads = table.slice(i, i + 200);
 
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: 'cvfgfhhrefgh2nc',
-      },
+    setTimeout(async () => {
+      try {
+        await fetch('http://localhost:4101/sendLeads', {
+          method: 'POST',
 
-      body: JSON.stringify({
-        leads: table,
-        tags: tags.split(', '),
-        targets: targets,
-      }),
-    });
-  } catch {}
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: 'cvfgfhhrefgh2nc',
+          },
+
+          body: JSON.stringify({
+            leads: leads,
+            tags: tags.split(', '),
+            targets: targets,
+          }),
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }, 30000 * i);
+  }
 }
 
 async function xlsxFileParser(dir) {
