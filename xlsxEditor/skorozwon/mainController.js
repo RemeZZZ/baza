@@ -35,7 +35,7 @@ export async function sendLeads(xlsxFileDir, tags = 'Тег не найден') 
       } catch (error) {
         console.log(error);
       }
-    }, 30000 * i);
+    }, i * 30);
   }
 }
 
