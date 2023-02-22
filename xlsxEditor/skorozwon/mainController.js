@@ -88,3 +88,15 @@ async function xlsxFileParser(dir) {
       return array;
     }, []);
 }
+
+export async function getOperators() {
+  const response = await fetch('http://localhost:4101/operators', {
+    headers: {
+      authorization: 'cvfgfhhrefgh2nc',
+    },
+  });
+
+  const result = await response.json();
+
+  return result.filter((item) => !item.locked);
+}

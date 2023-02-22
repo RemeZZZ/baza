@@ -28,6 +28,21 @@ export function setReplaceConfig(config) {
   writeFileSync(`${dir}/data/replace.config.json`, JSON.stringify(config));
 }
 
-export function setTargetsConfig(config) {
-  writeFileSync(`${dir}/data/targets.config.json`, JSON.stringify(config));
+export function setTargetsConfig(config, force) {
+  let defaultConfig = getTargetsConfig();
+
+  config.forEach((item) => {
+    if (!defaultConfig.some((user) => +user.id === item.id)) {
+      defaultConfig.push(item);
+    }
+  });
+
+  if (force) {
+    defaultConfig = config;
+  }
+
+  writeFileSync(
+    `${dir}/data/targets.config.json`,
+    JSON.stringify(defaultConfig),
+  );
 }

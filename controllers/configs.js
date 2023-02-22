@@ -8,6 +8,8 @@ import {
   setReplaceConfig,
 } from '../store/index.js';
 
+import { getOperators } from '../xlsxEditor/skorozwon/mainController.js';
+
 export default {
   getDefaultConfig(request, response) {
     response.send(getDefaultConfig());
@@ -21,7 +23,11 @@ export default {
     response.send(getReplaceConfig());
   },
 
-  getTargetsConfig(request, response) {
+  async getTargetsConfig(request, response) {
+    const operators = await getOperators();
+
+    setTargetsConfig(operators);
+
     response.send(getTargetsConfig());
   },
 
@@ -31,7 +37,7 @@ export default {
     response.send({ message: 'ok' });
   },
   setTargetsConfig(request, response) {
-    setTargetsConfig(request.body);
+    setTargetsConfig(request.body, true);
 
     response.send({ message: 'ok' });
   },
