@@ -194,6 +194,7 @@ function main() {
 
     if (method === 'GET') {
       const query = url.parse(request.url, true).query;
+      const users = getUsersConfig();
 
       if (query.type === 'sendFile') {
         console.log(query);
@@ -203,7 +204,23 @@ function main() {
       }
 
       if (query.type === 'getFile') {
-        response.end(JSON.stringify(queue.shift()));
+        const item = queue[0];
+
+        if (!item) {
+          response.end();
+
+          return;
+        }
+
+        console.log(item);
+
+        const isBot = users.type[item.id] === 'bot';
+
+        if (query.from === 'bot' && isBot) {
+          response.end(JSON.stringify(queue.shift()));
+        } else {
+          response.end(JSON.stringify(queue.shift()));
+        }
       }
     } else {
       response.end('good');

@@ -4,12 +4,6 @@ import asyncio
 import json
 import random
 
-foo = ['Давай встретимся вечером?',
-       'Мой кот наделал делов',
-       'Миша опять плачет',
-       'Я щас с ума сойду',
-       'Давай через пару часов',]
-
 auth = open('./auth.json', 'r')
 
 text = auth.read()
@@ -18,7 +12,7 @@ obj = json.loads(text)
 
 api_id = obj.get('id')
 api_hash = obj.get('hash')
-SESSION_NAME = 'user'
+SESSION_NAME = 'bot'
 
 # Подключаемся к телеграмму
 client = TelegramClient(SESSION_NAME, api_id, api_hash)
@@ -26,8 +20,6 @@ client = TelegramClient(SESSION_NAME, api_id, api_hash)
 
 async def send_file(user, path):
     try:
-        print(user)
-        await client.get_dialogs()
         entiti = await client.get_entity(user)
         await client.send_file(entiti, path)
     except Exception as e:
@@ -46,7 +38,7 @@ async def get_file():
     await asyncio.sleep(3)
 
     try:
-        result = requests.get('http://127.0.0.1:3027?type=getFile')
+        result = requests.get('http://127.0.0.1:3027?type=getFile&from=bot')
         data = result.json()
 
         id = data.get('id')
@@ -57,24 +49,9 @@ async def get_file():
         print('empty')
 
 
-async def send_text():
-    text = random.choice(foo)
-    
-    print(text)
-
-    try:
-        await client.get_dialogs()
-        entiti = await client.get_entity(1275852399)
-        await client.send_message(entiti, text)
-    except Exception as e:
-        print(e)
-
-
 async def interval():
     t1 = asyncio.ensure_future(repeat(10, get_file))
-    t2 = asyncio.ensure_future(repeat(random.randint(2000, 10000), send_text))
     await t1
-    await t2
 
 loop = asyncio.get_event_loop()
 
@@ -86,6 +63,8 @@ async def main(event):
             sender = await event.get_sender()
 
             dir = await event.download_media(f"./temp/{event.file.name}")
+
+            print(sender.id)
 
             requests.get(
                 f"http://127.0.0.1:3027?path={dir}&name={event.file.name}&userId={sender.id}&type=sendFile")
