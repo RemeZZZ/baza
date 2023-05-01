@@ -1,4 +1,4 @@
-from telethon import TelegramClient, events, utils, errors
+from telethon import TelegramClient, events, utils, errors, functions
 import requests
 import asyncio
 import json
@@ -26,7 +26,7 @@ client = TelegramClient(SESSION_NAME, api_id, api_hash)
 
 async def send_file(user, path):
     try:
-        print(user)
+        update_status()
         await client.get_dialogs()
         entiti = await client.get_entity(user)
         await client.send_file(entiti, path)
@@ -38,8 +38,14 @@ async def repeat(interval, func, *args, **kwargs):
     while True:
         await asyncio.gather(
             func(*args, **kwargs),
-            asyncio.sleep(interval),
+            asyncio.sleep(random.randint(interval, interval * 2)),
         )
+
+
+def update_status():
+    client(functions.account.UpdateStatusRequest(
+        offline=False
+    ))
 
 
 async def get_file():
@@ -59,8 +65,8 @@ async def get_file():
 
 async def send_text():
     text = random.choice(foo)
-    
-    print(text)
+
+    update_status()
 
     try:
         await client.get_dialogs()
@@ -72,7 +78,7 @@ async def send_text():
 
 async def interval():
     t1 = asyncio.ensure_future(repeat(10, get_file))
-    t2 = asyncio.ensure_future(repeat(random.randint(2000, 10000), send_text))
+    t2 = asyncio.ensure_future(repeat(5000, send_text))
     await t1
     await t2
 

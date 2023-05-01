@@ -212,13 +212,11 @@ function main() {
           return;
         }
 
-        console.log(item);
-
         const isBot = users.type[item.id] === 'bot';
 
         if (query.from === 'bot' && isBot) {
           response.end(JSON.stringify(queue.shift()));
-        } else {
+        } if (!isBot) {
           response.end(JSON.stringify(queue.shift()));
         }
       }
