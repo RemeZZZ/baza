@@ -32,7 +32,6 @@ client = TelegramClient(SESSION_NAME, api_id, api_hash)
 
 async def send_file(user, path):
     try:
-        update_status()
         await client.get_dialogs()
         entiti = await client.get_entity(user)
         await client.send_file(entiti, path)
@@ -71,8 +70,6 @@ async def get_file():
 
 async def send_text():
     text = random.choice(foo)
-
-    update_status()
 
     try:
         await client.get_dialogs()

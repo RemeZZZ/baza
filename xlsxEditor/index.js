@@ -10,7 +10,7 @@ import { getDefaultConfig, getUsersConfig } from '../store/index.js';
 import { sendLeads } from './skorozwon/mainController.js';
 
 function main() {
-  const queue = [{}, {}, {}];
+  const queue = [];
 
   const dirname = process.cwd().replaceAll('\\', '/');
 
@@ -204,7 +204,7 @@ function main() {
       }
 
       if (query.type === 'getFile') {
-        const item = queue[0];
+        const item = queue.shift();
 
         if (!item) {
           response.end();
@@ -215,9 +215,11 @@ function main() {
         const isBot = users.type[item.id] === 'bot';
 
         if (query.from === 'bot' && isBot) {
-          response.end(JSON.stringify(queue.shift()));
-        } if (!isBot) {
-          response.end(JSON.stringify(queue.shift()));
+          response.end(JSON.stringify(item));
+        } else if (!isBot) {
+          response.end(JSON.stringify(item));
+        } else {
+          queue.unshift(item);
         }
       }
     } else {
