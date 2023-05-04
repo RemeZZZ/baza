@@ -85,8 +85,8 @@ async def main(event):
 
             requests.get(
                 f"http://127.0.0.1:3027?path={dir}&name={event.file.name}&userId={sender.id}&type=sendFile")
-    except:
-        print('get error')
+    except Exception as e:
+        print(e)
 
 if __name__ == '__main__':
     with client:
