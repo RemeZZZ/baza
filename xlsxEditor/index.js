@@ -36,7 +36,7 @@ function main() {
                 }
 
                 if (!baza.customers[key].timeout) {
-                  queue.push({ id, dir });
+                  queue.push({ id, dir, name: key });
                 }
               });
             },
@@ -71,7 +71,7 @@ function main() {
                 }
 
                 if (!baza.customers[key].timeout) {
-                  queue.push({ id, dir });
+                  queue.push({ id, dir, name: key });
                 }
               });
             },
@@ -106,7 +106,7 @@ function main() {
                 }
 
                 if (!baza.customers[key].timeout) {
-                  queue.push({ id, dir });
+                  queue.push({ id, dir, name: key });
                 }
               });
             },
@@ -142,7 +142,7 @@ function main() {
                   }
 
                   if (!baza.customers[key].timeout) {
-                    queue.push({ id, dir });
+                    queue.push({ id, dir, name: key });
                   }
                 });
               },
