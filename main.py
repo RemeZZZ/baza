@@ -60,7 +60,7 @@ async def get_file():
 
 
 async def interval():
-    send_text('Сервер перезагружен')
+    await send_text('Сервер перезагружен')
     t1 = asyncio.ensure_future(repeat(10, get_file))
     await t1
 
