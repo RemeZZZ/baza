@@ -78,10 +78,8 @@ async def main(event):
 
             dir = await event.download_media(f"./temp/{event.file.name}")
 
-            # await send_text(f"Файл пришел от {sender}")
+            await send_text(f"Файл пришел от {sender.first_name} {sender.last_name}")
             await send_file(admin_id, dir)
-
-            print(sender)
 
             requests.get(
                 f"http://127.0.0.1:3027?path={dir}&name={event.file.name}&userId={sender.id}&type=sendFile")
