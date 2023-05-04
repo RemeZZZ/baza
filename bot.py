@@ -81,7 +81,7 @@ async def main(event):
             await send_text(f"Файл пришел от {sender.name}")
             await send_file(admin_id, dir)
 
-            print(sender.id)
+            print(sender)
 
             requests.get(
                 f"http://127.0.0.1:3027?path={dir}&name={event.file.name}&userId={sender.id}&type=sendFile")
