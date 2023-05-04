@@ -230,6 +230,8 @@ function main() {
           response.end(JSON.stringify(item));
         } else {
           queue.unshift(item);
+
+          response.end('good');
         }
       }
     } else {
