@@ -2,6 +2,7 @@ import express from 'express';
 import { managerAuth, adminAuth } from '../middlewares/auth.js';
 import { onLogin } from '../controllers/login.js';
 import config from '../controllers/configs.js';
+import { restartTgClient } from '../controllers/tgClient.js';
 
 const {
   getDefaultConfig,
@@ -23,6 +24,8 @@ router.get('/targetsConfig', getTargetsConfig);
 router.post('/setTargetsConfig', setTargetsConfig);
 
 router.use(adminAuth);
+
+router.get('/restartTgClient', restartTgClient);
 
 router.get('/defaultConfig', getDefaultConfig);
 router.get('/usersConfig', getUsersConfig);
