@@ -30,7 +30,6 @@ async def send_file(user, path):
 
 async def send_text(text):
     try:
-        await client.get_dialogs()
         entiti = await client.get_entity(admin_id)
         await client.send_message(entiti, text)
     except Exception as e:
