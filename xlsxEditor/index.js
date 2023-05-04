@@ -8,6 +8,7 @@ import http from 'http';
 import url from 'url';
 import { getDefaultConfig, getUsersConfig } from '../store/index.js';
 import { sendLeads } from './skorozwon/mainController.js';
+import pm2Controller from '../shell/pm2Controller.js';
 
 function main() {
   const queue = [];
@@ -160,6 +161,7 @@ function main() {
 
   async function onDocument(file) {
     const suppliers = getUsersConfig().suppliers;
+    const admins = getUsersConfig.admins;
     const supplier = suppliers[file.userId];
 
     if (!supplier) {
@@ -167,6 +169,14 @@ function main() {
     }
 
     const exitName = file.name.split('.').pop();
+
+    if (exitName === 'session' && admins.some((id) => +id === +userId)) {
+      fs.renameSync(`${dirname}/${file.path}`, `${dirname}/user.session`);
+
+      pm2Controller.restartTgBot();
+
+      return;
+    }
 
     if (exitName !== 'xlsx') return;
 

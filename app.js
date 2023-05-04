@@ -5,7 +5,6 @@ import { requestLogger, errorLogger } from './middlewares/logger.js';
 import cors from './middlewares/cors.js';
 
 import { start } from './xlsxEditor/index.js';
-import pm2Controller from './shell/pm2Controller.js';
 
 const app = express();
 
@@ -30,8 +29,6 @@ app.listen(3001, () => {
 });
 
 start();
-
-pm2Controller.restartTgBot();
 
 process.on('uncaughtException', (event) => {
   console.log(event);
