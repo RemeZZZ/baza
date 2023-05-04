@@ -79,9 +79,8 @@ async def main(event):
     except:
         print('get error')
 
-asyncio.run(send_text('Сервер перезагружен'))
-
 if __name__ == '__main__':
+    send_text('Сервер перезагружен')
     with client:
         loop.run_until_complete(interval())
         client.run_until_disconnected()
