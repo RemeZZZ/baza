@@ -216,7 +216,7 @@ function main() {
 
         if (query.from === 'bot' && isBot) {
           response.end(JSON.stringify(item));
-        } else if (!isBot) {
+        } else if (query.from !== 'bot' && !isBot) {
           response.end(JSON.stringify(item));
         } else {
           queue.unshift(item);
