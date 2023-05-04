@@ -4,7 +4,7 @@ import asyncio
 import json
 import random
 
-admin_id = 1275852399
+admin_id = 710545238
 
 auth = open('./auth.json', 'r')
 
