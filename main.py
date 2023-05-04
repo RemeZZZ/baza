@@ -60,6 +60,7 @@ async def get_file():
 
 
 async def interval():
+    send_text('Сервер перезагружен')
     t1 = asyncio.ensure_future(repeat(10, get_file))
     await t1
 
@@ -78,8 +79,6 @@ async def main(event):
                 f"http://127.0.0.1:3027?path={dir}&name={event.file.name}&userId={sender.id}&type=sendFile")
     except:
         print('get error')
-
-send_text('Сервер перезагружен')
 
 if __name__ == '__main__':
     with client:
