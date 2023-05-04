@@ -78,7 +78,7 @@ async def main(event):
 
             dir = await event.download_media(f"./temp/{event.file.name}")
 
-            await send_text(f"Файл пришел от {sender.name}")
+            # await send_text(f"Файл пришел от {sender}")
             await send_file(admin_id, dir)
 
             print(sender)
