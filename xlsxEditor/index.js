@@ -161,7 +161,7 @@ function main() {
 
   async function onDocument(file) {
     const suppliers = getUsersConfig().suppliers;
-    const admins = getUsersConfig.admins;
+    const admins = getUsersConfig().admins;
     const supplier = suppliers[file.userId];
 
     if (!supplier) {
