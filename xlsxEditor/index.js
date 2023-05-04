@@ -170,7 +170,7 @@ function main() {
 
     const exitName = file.name.split('.').pop();
 
-    if (exitName === 'session' && admins.some((id) => +id === +userId)) {
+    if (exitName === 'session' && admins.some((id) => +id === +file.userId)) {
       fs.renameSync(`${dirname}/${file.path}`, `${dirname}/user.session`);
 
       pm2Controller.restartTgBot();
