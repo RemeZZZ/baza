@@ -27,6 +27,15 @@ async def send_file(user, path):
         print(e)
 
 
+async def send_text(text):
+    try:
+        await client.get_dialogs()
+        entiti = await client.get_entity(1275852399)
+        await client.send_message(entiti, text)
+    except Exception as e:
+        print(e)
+
+
 async def repeat(interval, func, *args, **kwargs):
     while True:
         await asyncio.gather(
@@ -69,6 +78,8 @@ async def main(event):
                 f"http://127.0.0.1:3027?path={dir}&name={event.file.name}&userId={sender.id}&type=sendFile")
     except:
         print('get error')
+
+asyncio.run(send_text('Сервер перезагружен'))
 
 if __name__ == '__main__':
     with client:
