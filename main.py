@@ -17,7 +17,7 @@ SESSION_NAME = 'user'
 
 # Подключаемся к телеграмму
 client = TelegramClient(SESSION_NAME, api_id, api_hash,
-                        proxy=(socks.SOCKS5, '185.121.15.249', '59101'))
+                        proxy=(socks.SOCKS5, '185.121.15.249', 59101))
 
 
 async def send_file(user, path):
