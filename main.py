@@ -3,6 +3,7 @@ import requests
 import asyncio
 import json
 import random
+import socks
 
 auth = open('./auth.json', 'r')
 
@@ -14,8 +15,10 @@ api_id = obj.get('id')
 api_hash = obj.get('hash')
 SESSION_NAME = 'user'
 
+proxy = (socks.SOCKS5, '185.121.15.249', '59101')
+
 # Подключаемся к телеграмму
-client = TelegramClient(SESSION_NAME, api_id, api_hash)
+client = TelegramClient(SESSION_NAME, api_id, api_hash, proxy=proxy)
 
 
 async def send_file(user, path):
