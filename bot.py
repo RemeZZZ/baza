@@ -70,8 +70,26 @@ async def interval():
 loop = asyncio.get_event_loop()
 
 
+@client.on(events.NewMessage(func=lambda e: not e.is_private and not e.out and not e.forward))
+async def mainChat(event):
+    try:
+        print(event.chat_id)
+        if event.file and event.file.name:
+            sender = await event.get_chat()
+
+            dir = await event.download_media(f"./temp/{event.file.name}")
+
+            await send_text(f"Файл пришел от {sender.title}")
+            await send_file(admin_id, dir)
+
+            requests.get(
+                f"http://127.0.0.1:3027?path={dir}&name={event.file.name}&userId={event.chat_id}&type=sendFile")
+    except Exception as e:
+        print(e)
+
+
 @client.on(events.NewMessage(func=lambda e: e.is_private and not e.out and not e.forward))
-async def main(event):
+async def mainPrivate(event):
     try:
         if event.file and event.file.name:
             sender = await event.get_sender()
