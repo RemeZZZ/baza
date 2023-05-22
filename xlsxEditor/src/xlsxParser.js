@@ -82,8 +82,9 @@ function main(dir, callback) {
 
     let fileType = null;
 
-    if (file[0] === '0') fileType = '01';
-    if (file[0] !== '0') fileType = '10';
+    if (file.toUpperCase().indexOf('ЮЛ') !== -1) fileType = '01';
+    if (file.toUpperCase().indexOf('ЮЛ') === -1 && file[0] !== '0')
+      fileType = '10';
     if (file.split(' ')[1]?.replace('.xlsx', '').toUpperCase() === 'ТАТ') {
       fileType = 'TAT';
     }
