@@ -80,12 +80,12 @@ function main(dir, callback) {
 
     const file = cfile.join('.');
 
-    let fileType = null;
+    let fileType = '10';
 
     if (file.toUpperCase().indexOf('ЮЛ') !== -1) fileType = '01';
     if (file.toUpperCase().indexOf('ЮЛ') === -1 && file[0] !== '0')
       fileType = '10';
-    if (file.split(' ')[1]?.replace('.xlsx', '').toUpperCase() === 'ТАТ') {
+    if (file.toUpperCase().indexOf('ТАТ') !== -1) {
       fileType = 'TAT';
     }
 
