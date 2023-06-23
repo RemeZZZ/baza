@@ -21,7 +21,7 @@ export default async function check(inn) {
 
         promisesQueue.splice(index, 1);
       }
-    }, 90 * 1000);
+    }, 9 * 1000);
   });
 }
 
