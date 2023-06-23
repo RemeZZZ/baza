@@ -6,6 +6,10 @@ const allowedCors = [
   'vds2370188.my-ihor.ru',
   'http://185.87.51.76',
   'http://vds2370188.my-ihor.ru',
+  'http://zayavka-rko.ru',
+  'https://zayavka-rko.ru',
+  'http://www.zayavka-rko.ru',
+  'https://www.zayavka-rko.ru',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';

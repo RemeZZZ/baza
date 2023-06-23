@@ -1,7 +1,8 @@
 import xlsx from 'xlsx-populate';
 import fs from 'fs';
 
-import { getReplaceConfig } from '../../store/index.js';
+import { getReplaceConfig, setLead } from '../../store/index.js';
+import hash from './hash.js';
 
 const regions = JSON.parse(fs.readFileSync('./data.json'));
 function main(dir, callback) {
@@ -68,6 +69,18 @@ function main(dir, callback) {
         }
       }
 
+      const hash20 = hash(20);
+
+      resultRow[
+        'ссылка_скорринг'
+      ] = `http://zayavka-rko.ru/scorring?id=${hash20}`;
+
+      if (index === 0) {
+        resultRow['ссылка_скорринг'] = 'ссылка_скорринг';
+      }
+
+      setLead(hash20, resultRow);
+
       rows.push(resultRow);
 
       return rows;
@@ -92,6 +105,8 @@ function main(dir, callback) {
     const newReg = header.includes('огрн') ? false : 'ПредНовоРег';
 
     const type = +data[1]['инн'] > 10000000000 ? 'ИП' : 'ООО';
+
+    console.log(data);
 
     callback({
       fileType: fileType,

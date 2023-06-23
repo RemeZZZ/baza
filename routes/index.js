@@ -3,6 +3,7 @@ import { managerAuth, adminAuth } from '../middlewares/auth.js';
 import { onLogin } from '../controllers/login.js';
 import config from '../controllers/configs.js';
 import { restartTgClient } from '../controllers/tgClient.js';
+import { scorring } from '../controllers/scorring.js';
 
 const {
   getDefaultConfig,
@@ -15,6 +16,8 @@ const {
 } = config;
 
 const router = express.Router();
+
+router.get('/scorring', scorring);
 
 router.post('/login', onLogin);
 

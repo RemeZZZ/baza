@@ -1,5 +1,7 @@
 const dir = process.cwd();
 
+const leads = JSON.parse(readFileSync(`${dir}/data/leads.json`, 'utf-8'));
+
 import { readFileSync, writeFileSync } from 'fs';
 
 export function getDefaultConfig() {
@@ -45,4 +47,14 @@ export function setTargetsConfig(config, force) {
     `${dir}/data/targets.config.json`,
     JSON.stringify(defaultConfig),
   );
+}
+
+export function setLead(id, lead) {
+  leads[id] = lead;
+
+  writeFileSync(`${dir}/data/leads.json`, JSON.stringify(leads));
+}
+
+export function getLead(id) {
+  return leads[id];
 }
