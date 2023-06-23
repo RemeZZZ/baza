@@ -17,6 +17,6 @@ export default async function check(inn) {
 
     const data = await result.json();
 
-    return data;
+    return data.leads[0] || { result: 'хз' };
   } catch {}
 }

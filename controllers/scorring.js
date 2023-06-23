@@ -6,13 +6,23 @@ export async function scorring(request, response) {
   const { id } = request.query;
 
   const lead = getLead(id);
+  const companyInfo = {};
+
+  Object.entries(lead).forEach(([key, value]) => {
+    companyInfo[key] = value.toString();
+  });
 
   if (!lead) {
     return response.status(404).send({ data: {} });
   }
 
-  const vtbResult = await vtbOpen(lead['инн']);
-  const alphaResult = await alphaOpen(lead['инн'], lead['телефон']);
+  const vtbResult = await vtbOpen(companyInfo['инн']);
+  const alphaResult = await alphaOpen(
+    companyInfo['инн'],
+    companyInfo['телефон'],
+  );
+
+  console.log(vtbResult);
 
   await response.send({
     vtb: vtbResult.result,
