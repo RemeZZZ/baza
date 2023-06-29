@@ -56,5 +56,7 @@ export function setLead(id, lead) {
 }
 
 export function getLead(id) {
-  return leads[id];
+  // return leads[id];
+
+  return {};
 }

@@ -79,7 +79,7 @@ function main(dir, callback) {
         resultRow['ссылка_скорринг'] = 'ссылка_скорринг';
       }
 
-      setLead(hash20, resultRow);
+      //setLead(hash20, resultRow);
 
       rows.push(resultRow);
 
