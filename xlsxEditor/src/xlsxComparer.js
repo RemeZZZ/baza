@@ -18,11 +18,13 @@ async function main(dirs) {
 
   const workbook = await xlsx.fromFileAsync('./default.xlsx');
 
+  const finalDir = dirs[0].replace('.xlsx', '_finally.xlsx');
+
   await workbook.sheet(0).cell('A1').value(list);
 
-  await workbook.toFileAsync(`finally_${dirs[0]}`);
+  await workbook.toFileAsync(finalDir);
 
-  return `finally_${dirs[0]}`;
+  return finalDir;
 }
 
 export default main;
