@@ -75,6 +75,12 @@ async function main(dir, result, config, callback, options) {
             }
           }
 
+          if (row['инн'] && index) {
+            row['инн'].length === 11 || row['инн'].length === 9
+              ? `0${inn}`
+              : inn;
+          }
+
           headers.forEach((header) => {
             if (allowBanks.includes(header)) {
               const promise = new Promise((resolve, reject) => {

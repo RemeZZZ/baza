@@ -106,14 +106,33 @@ function main(dir, callback) {
 
     const type = +data[1]['инн'] > 10000000000 ? 'ИП' : 'ООО';
 
-    console.log(data);
+    if (data.length > 1000) {
+      const [header] = data;
 
-    callback({
-      fileType: fileType,
-      type: newReg || type,
-      legalType: type,
-      data: data,
-    });
+      for (let i = 0; i < data.length / 1000; i++) {
+        const copyData = [];
+
+        if (i > 0) {
+          copyData.push(header);
+        }
+
+        copyData.push(...data.slice(i * 1000, i * 1000 + 1000));
+
+        callback({
+          fileType: fileType,
+          type: newReg || type,
+          legalType: type,
+          data: copyData,
+        });
+      }
+    } else {
+      callback({
+        fileType: fileType,
+        type: newReg || type,
+        legalType: type,
+        data: data,
+      });
+    }
   });
 }
 
