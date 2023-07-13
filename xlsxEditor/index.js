@@ -2,6 +2,7 @@ import fs from 'fs';
 import Observer from './src/observer.js';
 import xlsxParser from './src/xlsxParser.js';
 import xlsxEditor from './src/xlsxEditor.js';
+import xlsxComparer from './src/xlsxComparer.js';
 import hash from './src/hash.js';
 import logs from './src/logs.js';
 import http from 'http';
@@ -12,6 +13,7 @@ import pm2Controller from '../shell/pm2Controller.js';
 
 function main() {
   const queue = [];
+  const tempQueue = [];
 
   const dirname = process.cwd().replaceAll('\\', '/');
 
@@ -37,7 +39,13 @@ function main() {
                 }
 
                 if (!baza.customers[key].timeout) {
-                  queue.push({ id, dir, name: key });
+                  sendToQueue({
+                    id,
+                    dir,
+                    name: key,
+                    hash: result.id,
+                    count: result.count,
+                  });
                 }
               });
             },
@@ -72,7 +80,13 @@ function main() {
                 }
 
                 if (!baza.customers[key].timeout) {
-                  queue.push({ id, dir, name: key });
+                  sendToQueue({
+                    id,
+                    dir,
+                    name: key,
+                    hash: result.id,
+                    count: result.count,
+                  });
                 }
               });
             },
@@ -107,7 +121,13 @@ function main() {
                 }
 
                 if (!baza.customers[key].timeout) {
-                  queue.push({ id, dir, name: key });
+                  sendToQueue({
+                    id,
+                    dir,
+                    name: key,
+                    hash: result.id,
+                    count: result.count,
+                  });
                 }
               });
             },
@@ -143,7 +163,13 @@ function main() {
                   }
 
                   if (!baza.customers[key].timeout) {
-                    queue.push({ id, dir, name: key });
+                    sendToQueue({
+                      id,
+                      dir,
+                      name: key,
+                      hash: result.id,
+                      count: result.count,
+                    });
                   }
                 });
               },
@@ -238,6 +264,22 @@ function main() {
       response.end('good');
     }
   });
+
+  async function sendToQueue({ id, dir, name, hash, count }) {
+    if (hash) {
+      tempQueue.push({ id, dir, name, hash });
+
+      const items = tempQueue.filter((item) => item.hash === hash);
+
+      if (items.length === count) {
+        const finallyDir = await xlsxComparer(items.map((item) => item.dir));
+
+        queue.push({ id, name, dir: finallyDir });
+      }
+    } else {
+      queue.push({ id, dir, name, hash });
+    }
+  }
 
   server.listen(3027);
 }

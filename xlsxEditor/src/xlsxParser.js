@@ -108,6 +108,7 @@ function main(dir, callback) {
 
     if (data.length > 1000) {
       const [header] = data;
+      const id = hash(20);
 
       for (let i = 0; i < data.length / 1000; i++) {
         const copyData = [];
@@ -124,6 +125,8 @@ function main(dir, callback) {
             type: newReg || type,
             legalType: type,
             data: copyData,
+            id: id,
+            count: data.length / 1000,
           });
         }, i * 50);
       }
