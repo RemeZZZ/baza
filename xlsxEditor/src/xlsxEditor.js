@@ -77,12 +77,11 @@ async function main(dir, result, config, callback, options) {
 
           if (row['инн'] && index) {
             row['инн'] = row['инн'].toString();
-            console.log(row['инн'].length);
+
             row['инн'] =
               row['инн'].length === 11 || row['инн'].length === 9
                 ? `0${row['инн']}`
                 : row['инн'];
-            console.log(row['инн']);
           }
 
           headers.forEach((header) => {

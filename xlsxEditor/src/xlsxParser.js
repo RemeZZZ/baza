@@ -118,12 +118,14 @@ function main(dir, callback) {
 
         copyData.push(...data.slice(i * 1000, i * 1000 + 1000));
 
-        callback({
-          fileType: fileType,
-          type: newReg || type,
-          legalType: type,
-          data: copyData,
-        });
+        setTimeout(() => {
+          callback({
+            fileType: fileType,
+            type: newReg || type,
+            legalType: type,
+            data: copyData,
+          });
+        }, i * 50);
       }
     } else {
       callback({
