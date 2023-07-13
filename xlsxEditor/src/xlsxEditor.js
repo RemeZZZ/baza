@@ -77,8 +77,8 @@ async function main(dir, result, config, callback, options) {
 
           if (row['инн'] && index) {
             row['инн'].length === 11 || row['инн'].length === 9
-              ? `0${inn}`
-              : inn;
+              ? `0${row['инн']}`
+              : row['инн'];
           }
 
           headers.forEach((header) => {
