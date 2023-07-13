@@ -5,7 +5,7 @@ async function main(dirs) {
   const list = [];
 
   for (const dir of dirs) {
-    await xlsx.fromFileAsync(dir);
+    const workbook = await xlsx.fromFileAsync(dir);
 
     const table = workbook.sheet(0).usedRange().value();
 
