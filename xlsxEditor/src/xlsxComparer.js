@@ -16,7 +16,7 @@ async function main(dirs) {
 
   list.unshift(headers);
 
-  const workbook = await xlsx.fromFileAsync('./default.xlsx');
+  const workbook = await xlsx.fromBlankAsync('./default.xlsx');
 
   const finalDir = dirs[0].replace('.xlsx', '_finally.xlsx');
 
