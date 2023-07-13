@@ -271,6 +271,8 @@ function main() {
 
       const items = tempQueue.filter((item) => item.hash === hash);
 
+      console.log(items.length, count);
+
       if (items.length === count) {
         const finallyDir = await xlsxComparer(items.map((item) => item.dir));
 
