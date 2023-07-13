@@ -126,7 +126,7 @@ function main(dir, callback) {
             legalType: type,
             data: copyData,
             id: id,
-            count: data.length / 1000,
+            count: Math.ceil(data.length / 1000),
           });
         }, i * 50);
       }
