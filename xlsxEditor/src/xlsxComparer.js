@@ -1,5 +1,4 @@
 import xlsx from 'xlsx-populate';
-import fs from 'fs';
 
 async function main(dirs) {
   let headers = [];
@@ -12,16 +11,18 @@ async function main(dirs) {
 
     headers = table.shift();
 
-    list.push(...table);
+    list.push(
+      ...table.map((item) => {
+        return item.map((item) => item?.toString());
+      }),
+    );
   }
 
   list.unshift(headers);
 
-  const workbook = await xlsx.fromBlankAsync('./default.xlsx');
+  const workbook = await xlsx.fromFileAsync('./default.xlsx');
 
   const finalDir = dirs[0].replace('.xlsx', '_finally.xlsx');
-
-  fs.writeFileSync('./j.json', JSON.stringify(list));
 
   await workbook.sheet(0).cell('A1').value(list);
 
