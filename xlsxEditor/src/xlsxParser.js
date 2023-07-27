@@ -106,6 +106,8 @@ function main(dir, callback) {
 
     const type = +data[1]['инн'] > 10000000000 ? 'ИП' : 'ООО';
 
+    console.log(data.length);
+
     if (data.length > 1000) {
       const [header] = data;
       const id = hash(20);

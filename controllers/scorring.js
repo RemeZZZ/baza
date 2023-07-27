@@ -22,8 +22,6 @@ export async function scorring(request, response) {
     companyInfo['телефон'],
   );
 
-  console.log(vtbResult);
-
   await response.send({
     vtb: vtbResult.result,
     alpha: alphaResult.result,

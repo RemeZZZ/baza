@@ -12,8 +12,6 @@ export default async function check(inn) {
     setTimeout(() => {
       const index = promisesQueue.findIndex((item) => item.id === inn);
 
-      console.log(promisesQueue[index]);
-
       if (promisesQueue[index]) {
         promisesQueue[index].end({
           result: 'Хз',
