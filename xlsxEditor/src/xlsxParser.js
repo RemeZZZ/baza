@@ -86,7 +86,7 @@ function main(dir, callback) {
 
         return rows;
       }, [])
-      .filter((item) => (!!item['инн'] || '').trim());
+      .filter((item) => !!item['инн']);
 
     const tfile = dir.split('\\').pop();
     const cfile = tfile.split('.');
