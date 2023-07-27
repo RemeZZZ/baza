@@ -36,55 +36,57 @@ function main(dir, callback) {
 
     const header = table[0];
 
-    const data = table.reduce((rows, row, index) => {
-      const resultRow = row.reduce((cells, cell, cellIndex) => {
-        const key = header[cellIndex];
+    const data = table
+      .reduce((rows, row, index) => {
+        const resultRow = row.reduce((cells, cell, cellIndex) => {
+          const key = header[cellIndex];
 
-        if (cells[key]) {
+          if (cells[key]) {
+            return cells;
+          }
+
+          cells[key] = cell;
+
           return cells;
-        }
+        }, {});
 
-        cells[key] = cell;
+        const ogrn = resultRow['огрн']?.toString();
 
-        return cells;
-      }, {});
+        if (
+          !(
+            resultRow.hasOwnProperty('индекс') ||
+            resultRow.hasOwnProperty('адрес') ||
+            resultRow.hasOwnProperty('город')
+          )
+        ) {
+          if (ogrn) {
+            const region = ogrn[3] + ogrn[4];
 
-      const ogrn = resultRow['огрн']?.toString();
-
-      if (
-        !(
-          resultRow.hasOwnProperty('индекс') ||
-          resultRow.hasOwnProperty('адрес') ||
-          resultRow.hasOwnProperty('город')
-        )
-      ) {
-        if (ogrn) {
-          const region = ogrn[3] + ogrn[4];
-
-          if (index === 0) {
-            resultRow['адрес'] = 'Адрес';
-          } else {
-            resultRow['адрес'] = regions[region];
+            if (index === 0) {
+              resultRow['адрес'] = 'Адрес';
+            } else {
+              resultRow['адрес'] = regions[region];
+            }
           }
         }
-      }
 
-      const hash20 = hash(20);
+        const hash20 = hash(20);
 
-      resultRow[
-        'ссылка_скорринг'
-      ] = `http://zayavka-rko.ru/scorring?id=${hash20}`;
+        resultRow[
+          'ссылка_скорринг'
+        ] = `http://zayavka-rko.ru/scorring?id=${hash20}`;
 
-      if (index === 0) {
-        resultRow['ссылка_скорринг'] = 'ссылка_скорринг';
-      }
+        if (index === 0) {
+          resultRow['ссылка_скорринг'] = 'ссылка_скорринг';
+        }
 
-      //setLead(hash20, resultRow);
+        //setLead(hash20, resultRow);
 
-      rows.push(resultRow);
+        rows.push(resultRow);
 
-      return rows;
-    }, []);
+        return rows;
+      }, [])
+      .filter((item) => !!item['инн']?.trim());
 
     const tfile = dir.split('\\').pop();
     const cfile = tfile.split('.');
